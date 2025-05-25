@@ -33,7 +33,7 @@ public class SchedulerLv2Controller {
                 .body(schedulers);
     }
     @GetMapping("/{schedulerId}")
-    public ResponseEntity<SchedulerResponseDto> findByById(@PathVariable Long schedulerId, @RequestBody SchedulerRequestDto requestDto){
+    public ResponseEntity<SchedulerResponseDto> findByById(@PathVariable Long schedulerId){
         SchedulerResponseDto scheduler= service.findById(schedulerId);
         return ResponseEntity
                 .status(HttpStatus.OK)

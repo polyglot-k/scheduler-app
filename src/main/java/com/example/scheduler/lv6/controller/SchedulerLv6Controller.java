@@ -41,7 +41,7 @@ public class SchedulerLv6Controller {
                 .body(SuccessResponse.of("전체 일정을 조회하였습니다.",schedulers));
     }
     @GetMapping("/{schedulerId}")
-    public ResponseEntity<?> findByById(@PathVariable Long schedulerId, @RequestBody SchedulerRequestDto requestDto){
+    public ResponseEntity<?> findByById(@PathVariable Long schedulerId){
         SchedulerResponseDto scheduler= service.findById(schedulerId);
         return ResponseEntity
                 .ok(SuccessResponse.of("일정을 조회하였습니다.", scheduler));
