@@ -2,6 +2,7 @@ package com.example.scheduler.lv6.controller;
 
 import com.example.scheduler.lv6.dto.*;
 import com.example.scheduler.lv6.dto.common.Pageable;
+import com.example.scheduler.lv6.dto.common.SuccessResponse;
 import com.example.scheduler.lv6.service.SchedulerLv6Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class SchedulerLv6Controller {
         service.create(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .build();
+                .body(SuccessResponse.of("일정이 생성되었습니다.", null));
     }
     @GetMapping("")
     public ResponseEntity<?> findByCondition(
@@ -37,14 +38,13 @@ public class SchedulerLv6Controller {
         Pageable<SchedulerResponseDto> schedulers = service.findByCondition(searchConditionDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(schedulers);
+                .body(SuccessResponse.of("전체 일정을 조회하였습니다.",schedulers));
     }
     @GetMapping("/{schedulerId}")
     public ResponseEntity<?> findByById(@PathVariable Long schedulerId, @RequestBody SchedulerRequestDto requestDto){
         SchedulerResponseDto scheduler= service.findById(schedulerId);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(scheduler);
+                .ok(SuccessResponse.of("일정을 조회하였습니다.", scheduler));
     }
 
     @PutMapping("/{schedulerId}")
@@ -53,8 +53,7 @@ public class SchedulerLv6Controller {
             @RequestBody @Valid SchedulerRequestDto requestDto){
         service.update(schedulerId, requestDto);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
+                .ok(SuccessResponse.of("일정이 수정되었습니다.", null));
     }
 
     @DeleteMapping("/{schedulerId}")
@@ -63,8 +62,7 @@ public class SchedulerLv6Controller {
             @RequestBody @Valid SchedulerDeleteRequestDto requestDto){
         service.delete(schedulerId, requestDto);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
+                .ok(SuccessResponse.of("일정이 삭제되었습니다.", null));
     }
 
 }
