@@ -16,14 +16,15 @@ public class Scheduler {
     private LocalDate updatedAt;
     private User user;
 
-    public Scheduler(String todo) {
+    public Scheduler(String todo, User user) {
         this.todo = todo;
+        this.user = user;
         this.createdAt = LocalDate.now();
         this.updatedAt = LocalDate.now();
     }
 
-    public static Scheduler from(String todo) {
-        return new Scheduler(todo);
+    public static Scheduler from(String todo, User user) {
+        return new Scheduler(todo, user);
     }
 
     public void updateTodo(String todo) {

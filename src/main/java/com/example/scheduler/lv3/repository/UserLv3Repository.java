@@ -42,4 +42,13 @@ public class UserLv3Repository {
                 rs.getTimestamp("updated_at").toLocalDateTime().toLocalDate()
         );
     }
+
+    public void update(User user) {
+        String sql = "UPDATE scheduler.users SET name = ?,updated_at WHERE id = ?";
+        jdbcTemplate.update(sql,
+                user.getName(),
+                user.getUpdatedAt(),
+                user.getId()
+        );
+    }
 }

@@ -22,9 +22,8 @@ public class SchedulerLv3Service {
 
     public List<SchedulerResponseDto> findByCondition(SchedulerSearchConditionDto searchConditionDto) {
         return repository.findByCondition(
-                    searchConditionDto.getWriter(),
-                    searchConditionDto.getUpdatedFrom(),
-                    searchConditionDto.getUpdatedTo()
+                    searchConditionDto.getUserId(),
+                    searchConditionDto.getUpdatedAt()
                 )
                 .stream()
                 .map(SchedulerResponseDto::of)
@@ -44,7 +43,7 @@ public class SchedulerLv3Service {
                 .orElseThrow(()-> new RuntimeException("이메일 없다."));
         if(!user.isMatchPassword(password))
             throw new RuntimeException();
-        Scheduler scheduler = Scheduler.from(requestDto.getTodo());
+        Scheduler scheduler = Scheduler.from(requestDto.getTodo(), user);
         repository.save(scheduler);
     }
     public void update(Long id, SchedulerRequestDto requestDto) {

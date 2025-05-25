@@ -17,7 +17,7 @@ public class SchedulerLv2Repository {
     private final JdbcTemplate jdbcTemplate;
 
     public void save(Scheduler scheduler){
-        String sql = "INSERT INTO scheduler (todo, writer, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO scheduler.scheduler (todo, writer, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 scheduler.getTodo(),
                 scheduler.getWriter(),
@@ -27,19 +27,20 @@ public class SchedulerLv2Repository {
         );
     }
     public void delete(Scheduler scheduler){
-        String sql = "DELETE FROM scheduler WHERE id = ?";
+        String sql = "DELETE FROM scheduler.scheduler WHERE id = ?";
         jdbcTemplate.update(sql, scheduler.getId());
     }
     public void update(Scheduler scheduler) {
-        String sql = "UPDATE scheduler SET todo = ?, writer = ? WHERE id = ?";
+        String sql = "UPDATE scheduler.scheduler SET todo = ?, writer = ?, updated_at =? WHERE id = ?";
         jdbcTemplate.update(
                 sql,
                 scheduler.getTodo(),
                 scheduler.getWriter(),
+                scheduler.getUpdatedAt(),
                 scheduler.getId()
         );
     }
-    public List<Scheduler> findByCondition(String writer, LocalDate updatedFrom, LocalDate updatedTo) {
+    public List<Scheduler> findByCondition(String writer, LocalDate updatedAt) {
         StringBuilder sql = new StringBuilder("SELECT * FROM scheduler WHERE 1=1");
         List<Object> params = new ArrayList<>();
 
@@ -48,23 +49,17 @@ public class SchedulerLv2Repository {
             params.add(writer);
         }
 
-        if (updatedFrom != null && updatedTo != null) {
-            sql.append(" AND updated_at BETWEEN ? AND ?");
-            params.add(updatedFrom);
-            params.add(updatedTo);
-        } else if (updatedFrom != null) {
-            sql.append(" AND updated_at >= ?");
-            params.add(updatedFrom);
-        } else if (updatedTo != null) {
-            sql.append(" AND updated_at <= ?");
-            params.add(updatedTo);
+        if (updatedAt != null) {
+            sql.append(" AND updated_at = ?");
+            params.add(updatedAt);
         }
 
+        sql.append(" order by updated_at desc");
         return jdbcTemplate.query(sql.toString(), schedulerRowMapper(), params.toArray());
     }
 
     public Optional<Scheduler> findById(Long id) {
-        String sql = "SELECT * FROM scheduler WHERE id = ?";
+        String sql = "SELECT * FROM scheduler.scheduler WHERE id = ?";
         Scheduler foundScheduler = jdbcTemplate.queryForObject(sql, schedulerRowMapper(), id);
         return Optional.of(foundScheduler);
     }

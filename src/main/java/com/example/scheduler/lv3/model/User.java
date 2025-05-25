@@ -32,4 +32,8 @@ public class User {
     public boolean isMatchPassword(String password) {
         return this.password.equals(password);
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

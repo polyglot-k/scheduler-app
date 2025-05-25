@@ -9,10 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class SchedulerSearchConditionDto {
-    String writer;
+    Long userId;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate updatedFrom;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate updatedTo;
+    private LocalDate updatedAt;
 }

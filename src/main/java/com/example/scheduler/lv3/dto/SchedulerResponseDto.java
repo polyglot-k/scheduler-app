@@ -3,6 +3,7 @@ package com.example.scheduler.lv3.dto;
 import com.example.scheduler.lv3.model.Scheduler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,15 +13,16 @@ import java.time.format.DateTimeFormatter;
 public class SchedulerResponseDto {
     private Long id;
     private String todo;
-    private String writer;
+    private Author author;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
     public static SchedulerResponseDto of(Scheduler foundScheduler) {
+        Author author = new Author(foundScheduler.getUser().getName());
         return new SchedulerResponseDto(
                 foundScheduler.getId(),
                 foundScheduler.getTodo(),
-                foundScheduler.getUser().getName(),
+                author,
                 foundScheduler.getCreatedAt(),
                 foundScheduler.getUpdatedAt()
         );
@@ -31,5 +33,11 @@ public class SchedulerResponseDto {
 
     public String getUpdatedAt() {
         return updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    @Data
+    @AllArgsConstructor
+    static public class Author{
+        String name;
     }
 }

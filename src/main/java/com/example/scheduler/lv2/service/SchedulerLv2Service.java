@@ -7,11 +7,13 @@ import com.example.scheduler.lv2.dto.SchedulerSearchConditionDto;
 import com.example.scheduler.lv2.model.Scheduler;
 import com.example.scheduler.lv2.repository.SchedulerLv2Repository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SchedulerLv2Service {
 
@@ -20,8 +22,7 @@ public class SchedulerLv2Service {
     public List<SchedulerResponseDto> findByCondition(SchedulerSearchConditionDto searchConditionDto) {
         return repository.findByCondition(
                     searchConditionDto.getWriter(),
-                    searchConditionDto.getUpdatedFrom(),
-                    searchConditionDto.getUpdatedTo()
+                    searchConditionDto.getUpdatedAt()
                 )
                 .stream()
                 .map(SchedulerResponseDto::of)
@@ -51,6 +52,7 @@ public class SchedulerLv2Service {
                 requestDto.getTodo(),
                 requestDto.getWriter()
         );
+        log.info(scheduler.toString());
         repository.update(scheduler);
     }
 
