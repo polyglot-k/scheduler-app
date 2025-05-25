@@ -12,6 +12,6 @@ public class SchedulerSearchConditionDto {
     private Long userId;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate updatedAt;
-    private int page=1;
-    private int size=10;
+    private Integer page = 1;
+    private Integer size = 10;
 }
